@@ -1,4 +1,0 @@
-enum InboxRoomType {
-  profile,
-  band
-}

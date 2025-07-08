@@ -1,4 +1,0 @@
-enum AppFileFrom {
-  camera,
-  gallery,
-}
