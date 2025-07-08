@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:neom_commons/commons/utils/app_utilities.dart';
-import 'package:neom_commons/commons/utils/constants/app_translation_constants.dart';
-import 'package:neom_commons/commons/utils/device_utilities.dart';
-import 'package:neom_commons/commons/utils/file_system_utilities.dart';
+import 'package:neom_commons/utils/app_utilities.dart';
+import 'package:neom_commons/utils/constants/app_translation_constants.dart';
+import 'package:neom_commons/utils/device_utilities.dart';
+import 'package:neom_commons/utils/file_system_utilities.dart';
 import 'package:neom_core/app_config.dart';
 import 'package:neom_core/app_properties.dart';
 import 'package:neom_core/data/firestore/constants/app_firestore_collection_constants.dart';
@@ -17,12 +17,11 @@ import 'package:neom_core/data/firestore/user_firestore.dart';
 import 'package:neom_core/domain/model/app_coupon.dart';
 import 'package:neom_core/domain/model/app_profile.dart';
 import 'package:neom_core/domain/model/app_user.dart';
+import 'package:neom_core/domain/model/user_locations.dart';
+import 'package:neom_core/domain/repository/analytics_repository.dart';
 import 'package:neom_core/utils/position_utilities.dart';
 
-import '../../domain/model/user_locations.dart';
-import '../../domain/repository/app_analytics_repository.dart';
-
-class AppAnalyticsFirestore implements AppAnalyticsRepository {
+class AnalyticsFirestore implements AnalyticsRepository {
   
   final analyticsReference = FirebaseFirestore.instance
       .collection(AppFirestoreCollectionConstants.analytics);

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:neom_commons/commons/ui/theme/app_theme.dart';
-import 'package:neom_commons/commons/ui/widgets/app_circular_progress_indicator.dart';
-import 'package:neom_commons/commons/ui/widgets/appbar_child.dart';
-import 'package:neom_commons/commons/utils/constants/app_translation_constants.dart';
+import 'package:neom_commons/ui/theme/app_theme.dart';
+import 'package:neom_commons/ui/widgets/app_circular_progress_indicator.dart';
+import 'package:neom_commons/ui/widgets/appbar_child.dart';
+import 'package:neom_commons/utils/constants/app_translation_constants.dart';
 import 'package:neom_core/app_config.dart';
-import '../data/firestore/app_analytics_firestore.dart';
-import '../domain/model/user_locations.dart';
+import 'package:neom_core/domain/model/user_locations.dart';
+import '../data/firestore/analytics_firestore.dart';
 import 'charts/yearly_line_chart.dart';
 
 class AnalyticsPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
         height: AppTheme.fullHeight(context),
         child: SingleChildScrollView(
           child: FutureBuilder<List<UserLocations>>(
-            future: AppAnalyticsFirestore().getUserLocations(), // Replace with your own function to fetch userLocations asynchronously
+            future: AnalyticsFirestore().getUserLocations(), // Replace with your own function to fetch userLocations asynchronously
             builder: (context, snapshot) {
               AppConfig.logger.d("AnalyticsPage: FutureBuilder snapshot: ${snapshot.connectionState} - ${snapshot.data?.length ?? 0}");
               if (snapshot.connectionState == ConnectionState.waiting) {
