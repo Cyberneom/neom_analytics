@@ -1,2 +1,2 @@
-# neom_commons
-Common module for apps.
+# neom_analytics
+Analytics for Open Neom.
