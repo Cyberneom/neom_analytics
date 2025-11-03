@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:neom_commons/ui/theme/app_theme.dart';
 import 'package:neom_commons/ui/widgets/app_circular_progress_indicator.dart';
 import 'package:neom_commons/ui/widgets/appbar_child.dart';
-import 'package:neom_commons/utils/constants/app_translation_constants.dart';
+import 'package:neom_commons/utils/constants/translations/app_translation_constants.dart';
 import 'package:neom_core/app_config.dart';
 import 'package:neom_core/domain/model/user_locations.dart';
 import '../data/firestore/analytics_firestore.dart';
+import '../utils/constants/analytic_translation_constants.dart';
 import 'charts/yearly_line_chart.dart';
 
 class AnalyticsPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarChild(title: AppTranslationConstants.analytics.tr),
+      appBar: AppBarChild(title: AnalyticTranslationConstants.analytics.tr),
       body: Container(
         decoration: AppTheme.appBoxDecoration,
         height: AppTheme.fullHeight(context),
@@ -68,7 +69,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
                   children: [
                     YearlyLineChart(monthlyValues: monthlyValues, yTitle: AppTranslationConstants.users.tr,),
                     AppTheme.heightSpace5,
-                    Text('${monthlyValues[DateTime.now().month]} ${AppTranslationConstants.users.tr.capitalize}',
+                    Text('${monthlyValues[DateTime.now().month-1]} ${AppTranslationConstants.users.tr.capitalize}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20

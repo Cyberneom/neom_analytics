@@ -3,7 +3,7 @@ import 'package:neom_core/utils/constants/app_route_constants.dart';
 
 import 'ui/analytics_page.dart';
 
-class CommonRoutes {
+class AnalyticsRoutes {
 
   static final List<GetPage<dynamic>> routes = [
     GetPage(

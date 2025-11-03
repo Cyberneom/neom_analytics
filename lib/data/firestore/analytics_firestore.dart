@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:neom_commons/utils/app_utilities.dart';
-import 'package:neom_commons/utils/constants/app_translation_constants.dart';
 import 'package:neom_commons/utils/device_utilities.dart';
 import 'package:neom_commons/utils/file_system_utilities.dart';
 import 'package:neom_core/app_config.dart';
@@ -20,6 +19,8 @@ import 'package:neom_core/domain/model/app_user.dart';
 import 'package:neom_core/domain/model/user_locations.dart';
 import 'package:neom_core/domain/repository/analytics_repository.dart';
 import 'package:neom_core/utils/position_utilities.dart';
+
+import '../../utils/constants/analytic_translation_constants.dart';
 
 class AnalyticsFirestore implements AnalyticsRepository {
   
@@ -133,11 +134,11 @@ class AnalyticsFirestore implements AnalyticsRepository {
 
       } catch (e) {
         AppConfig.logger.e(e.toString());
-        AppUtilities.showSnackBar(title: AppTranslationConstants.analytics,
+        AppUtilities.showSnackBar(title: AnalyticTranslationConstants.analytics,
             message: "Hubo un error al actualizar las analíticas");
       }
       
-      AppUtilities.showSnackBar(title: AppTranslationConstants.analytics,
+      AppUtilities.showSnackBar(title: AnalyticTranslationConstants.analytics,
           message: "Las analíticas han sido actualizadas");
 
   }
