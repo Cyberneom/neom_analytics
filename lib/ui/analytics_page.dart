@@ -26,6 +26,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
       appBar: AppBarChild(title: AnalyticTranslationConstants.analytics.tr),
       body: Container(
         decoration: AppTheme.appBoxDecoration,
+        alignment: Alignment.center,
         height: AppTheme.fullHeight(context),
         child: SingleChildScrollView(
           child: FutureBuilder<List<UserLocations>>(
@@ -33,19 +34,17 @@ class AnalyticsPageState extends State<AnalyticsPage> {
             builder: (context, snapshot) {
               AppConfig.logger.d("AnalyticsPage: FutureBuilder snapshot: ${snapshot.connectionState} - ${snapshot.data?.length ?? 0}");
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return AppCircularProgressIndicator();
+                return const Center(child: AppCircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return const Center(child: Text('Error loading userLocations'),
-                );
+                return const Center(child: Text('Error loading userLocations'));
               } else {
-
                 List<UserLocations> userLocations = [];
                 Map<String,int> dateData = {};
 
                 List<MapEntry<String, int>> sortedEntries = [];
                 if(snapshot.data != null) {
                   userLocations = snapshot.data!;
-                  userLocations.sort((a, b) => parseDateId(b.dateId).compareTo(parseDateId(a.dateId)));
+                  userLocations.sort((a, b) => _parseDateId(b.dateId).compareTo(_parseDateId(a.dateId)));
                   dateData = userLocations.first.locationCounts ?? {};
 
                   sortedEntries = dateData.entries.toList()
@@ -56,7 +55,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
 
                 for (UserLocations ul in userLocations) {
                   // Convertir el dateId a DateTime para extraer el mes.
-                  DateTime? date = parseDateId(ul.dateId);
+                  DateTime? date = _parseDateId(ul.dateId);
                   int month = date.month;
                   // Acumular totalUsers para cada mes.
                   if(monthlyValues[month] == null || (monthlyValues[month] ?? 0) < ul.totalUsers) {
@@ -69,7 +68,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
                   children: [
                     YearlyLineChart(monthlyValues: monthlyValues, yTitle: AppTranslationConstants.users.tr,),
                     AppTheme.heightSpace5,
-                    Text('${monthlyValues[DateTime.now().month-1]} ${AppTranslationConstants.users.tr.capitalize}',
+                    Text('${monthlyValues[_lastAvailableMonth(monthlyValues)]} ${AppTranslationConstants.users.tr.capitalize}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20
@@ -98,13 +97,25 @@ class AnalyticsPageState extends State<AnalyticsPage> {
     );
   }
 
-  DateTime parseDateId(String dateId) {
+  DateTime _parseDateId(String dateId) {
     if(dateId.isEmpty) return DateTime(0);
 
     final month = int.parse(dateId.substring(0, 2));
     final day = int.parse(dateId.substring(2, 4));
     final year = int.parse(dateId.substring(4));
     return DateTime(year, month, day);
+  }
+
+  int _lastAvailableMonth(Map<int, int> monthlyValues) {
+    final now = DateTime.now();
+    // empieza en el mes actual y retrocede hasta enero
+    for (int offset = 0; offset < 12; offset++) {
+      final m = now.month - offset;
+      final key = m < 1 ? 12 + m : m;          // envuelve año si hace falta
+      if (monthlyValues[key] != null) return key;
+    }
+    // si no hay nada, devuelve el mes actual (aunque sea null)
+    return now.month;
   }
 
 }
