@@ -66,7 +66,7 @@ class _YearlyLineChartState extends State<YearlyLineChart> {
             child: Text(widget.yTitle,
               style: TextStyle(
                 fontSize: 12,
-                color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
+                color: showAvg ? Colors.white.withValues(alpha: 0.5) : Colors.white,
               ),
             ),
           ),
@@ -224,7 +224,7 @@ class _YearlyLineChartState extends State<YearlyLineChart> {
         belowBarData: BarAreaData(
           show: true,
           gradient: LinearGradient(
-            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            colors: gradientColors.map((color) => color.withValues(alpha: 0.3)).toList(),
           ),
         ),
       );
@@ -317,8 +317,8 @@ class _YearlyLineChartState extends State<YearlyLineChart> {
             show: true,
             gradient: LinearGradient(
               colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withValues(alpha: 0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withValues(alpha: 0.1),
               ],
             ),
           ),

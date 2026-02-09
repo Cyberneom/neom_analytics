@@ -24,7 +24,7 @@ class WeeklyBarChart extends StatefulWidget {
     Colors.red,
   ];
 
-  final Color barBackgroundColor = Colors.white.withOpacity(0.3);
+  final Color barBackgroundColor = Colors.white.withValues(alpha: 0.3);
   final Color barColor = Colors.white;
   final Color touchedBarColor = Colors.red;
 
