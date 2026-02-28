@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:neom_core/utils/platform/core_io.dart';
 import 'package:csv/csv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:neom_commons/utils/app_utilities.dart';
