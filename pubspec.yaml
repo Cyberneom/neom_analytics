@@ -19,7 +19,7 @@ dependencies:
     git:
       url: git@github.com:Cyberneom/neom_commons.git
 
-  fl_chart: ^1.1.1
+  fl_chart: ^0.69.0
   csv: ^6.0.0
   flutter_animate: ^4.5.2
   pie_chart: ^5.4.0
