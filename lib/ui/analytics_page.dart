@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neom_commons/ui/theme/app_theme.dart';
 import 'package:neom_commons/ui/widgets/app_circular_progress_indicator.dart';
-import 'package:neom_commons/ui/widgets/appbar_child.dart';
+
 import 'package:neom_commons/utils/constants/translations/app_translation_constants.dart';
 import 'package:neom_core/app_config.dart';
 import 'package:neom_core/domain/model/user_locations.dart';
@@ -27,7 +27,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarChild(title: AnalyticTranslationConstants.analytics.tr),
+      appBar: SintAppBar(title: AnalyticTranslationConstants.analytics.tr),
       body: Container(
         decoration: AppTheme.appBoxDecoration,
         alignment: Alignment.center,

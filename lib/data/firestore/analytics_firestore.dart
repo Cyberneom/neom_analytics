@@ -8,6 +8,7 @@ import 'package:neom_commons/utils/app_utilities.dart';
 import 'package:neom_commons/utils/device_utilities.dart';
 import 'package:neom_commons/utils/file_system_utilities.dart';
 import 'package:neom_core/app_config.dart';
+import 'package:neom_core/utils/neom_error_logger.dart';
 import 'package:neom_core/app_properties.dart';
 import 'package:neom_core/data/firestore/constants/app_firestore_collection_constants.dart';
 import 'package:neom_core/data/firestore/constants/app_firestore_constants.dart';
@@ -42,8 +43,8 @@ class AnalyticsFirestore implements AnalyticsRepository {
         userLocationsList.add(userLocations);
       }
 
-    } catch (e) {
-      AppConfig.logger.e(e.toString());
+    } catch (e, st) {
+      NeomErrorLogger.recordError(e, st, module: 'neom_analytics', operation: 'getUserLocations');
     }
 
     return userLocationsList;
@@ -132,8 +133,8 @@ class AnalyticsFirestore implements AnalyticsRepository {
 
         await getUserEmailsAsText(getEmailsAsText, users);
 
-      } catch (e) {
-        AppConfig.logger.e(e.toString());
+      } catch (e, st) {
+        NeomErrorLogger.recordError(e, st, module: 'neom_analytics', operation: 'setUserLocations');
         AppUtilities.showSnackBar(title: AnalyticTranslationConstants.analytics,
             message: "Hubo un error al actualizar las analíticas");
       }
