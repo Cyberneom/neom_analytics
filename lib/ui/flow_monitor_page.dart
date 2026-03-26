@@ -499,7 +499,7 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
         children: [
           Row(
             children: [
-              const Icon(Icons.visibility, color: Colors.blue, size: 20),
+              const Icon(Icons.visibility, color: Colors.lightBlueAccent, size: 20),
               const SizedBox(width: 8),
               Text(
                 '${AnalyticTranslationConstants.screenVisits.tr} (${_screenLogs.length} ${AnalyticTranslationConstants.daysLabel.tr})',
@@ -534,7 +534,7 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
                         child: LinearProgressIndicator(
                           value: fraction,
                           backgroundColor: Colors.white.withAlpha(12),
-                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
                         ),
                       ),
                     ),
@@ -543,7 +543,7 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
                     width: 40,
                     child: Text(
                       '${entry.value}',
-                      style: const TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: Colors.lightBlueAccent, fontSize: 12, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.right,
                     ),
                   ),

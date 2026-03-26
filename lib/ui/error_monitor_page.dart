@@ -557,11 +557,11 @@ class _ErrorMonitorPageState extends State<ErrorMonitorPage> {
           style: const TextStyle(color: Colors.white70)),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Sint.back(result: false),
             child: Text(AnalyticTranslationConstants.cancel, style: const TextStyle(color: Colors.white54)),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Sint.back(result: true),
             child: Text(AnalyticTranslationConstants.reset, style: TextStyle(color: Colors.red.shade300)),
           ),
         ],
