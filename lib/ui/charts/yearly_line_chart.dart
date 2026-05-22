@@ -124,7 +124,7 @@ class _YearlyLineChartState extends State<YearlyLineChart> {
     }
 
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       child: text,
     );
   }

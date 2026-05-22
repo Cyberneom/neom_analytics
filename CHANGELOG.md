@@ -2,6 +2,11 @@
 
 All notable changes to neom_analytics will be documented in this file.
 
+## [1.3.1] - 2026-04-16
+
+### Fixed
+- Removed deprecated `axisSide` parameter from SideTitleWidget for fl_chart 0.70 compatibility
+
 ## [1.3.0] - 2025-02-09
 
 ### Changed

@@ -242,7 +242,7 @@ class WeeklyBarChartState extends State<WeeklyBarChart> {
         break;
     }
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       space: 16,
       child: text,
     );

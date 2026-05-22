@@ -273,7 +273,7 @@ class _ErrorMonitorPageState extends State<ErrorMonitorPage> {
                         final idx = value.toInt();
                         if (idx < 0 || idx >= top.length) return const SizedBox.shrink();
                         return SideTitleWidget(
-                          axisSide: meta.axisSide,
+                          meta: meta,
                           child: Text(
                             top[idx].displayName,
                             style: const TextStyle(color: Colors.white70, fontSize: 11),
