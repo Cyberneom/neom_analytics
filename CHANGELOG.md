@@ -1,3 +1,6 @@
+## [2026-07-25] - Dependencias Externas
+- Actualizacion de dependencias externas a sus versiones mas recientes y compatibles.
+
 # Changelog
 
 All notable changes to neom_analytics will be documented in this file.
