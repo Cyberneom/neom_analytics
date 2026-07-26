@@ -169,7 +169,7 @@ class AnalyticsFirestore implements AnalyticsRepository {
         DeviceUtilities.copyToClipboard(text: emailList.toString());
         AppConfig.logger.i("Email List created to path $emailListPath successfully and copied to Clipboard.");
 
-        String csv = const ListToCsvConverter().convert(rows);
+        String csv = const CsvEncoder().convert(rows);
         String emailCsvPath = '$localPath/${AppProperties.getAppName()}_emails_list.csv';
         // Create the CSV file
         File csvFile = File(emailCsvPath);
