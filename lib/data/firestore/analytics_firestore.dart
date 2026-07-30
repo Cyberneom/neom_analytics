@@ -146,7 +146,10 @@ class AnalyticsFirestore implements AnalyticsRepository {
 
   Future<void> getUserEmailsAsText(bool getEmailsAsText, List<AppUser> users) async {
 
-    if(getEmailsAsText || true) {
+    // PII guard: email export only runs when explicitly requested (getEmailsAsText == true).
+    // Never force this on analytics updates — dumping all user emails to local
+    // files and the clipboard is a data-leak vector (GDPR/privacy risk).
+    if(getEmailsAsText) {
       StringBuffer emailList = StringBuffer();
 
       List<List<dynamic>> rows = [];
