@@ -13,16 +13,24 @@ import '../utils/constants/analytic_translation_constants.dart';
 import 'charts/yearly_line_chart.dart';
 
 class AnalyticsPage extends StatefulWidget {
+  final AnalyticsRepository? analyticsRepository;
 
-  const AnalyticsPage({super.key});
+  const AnalyticsPage({super.key, this.analyticsRepository});
 
   @override
   AnalyticsPageState createState() => AnalyticsPageState();
-
 }
 
 class AnalyticsPageState extends State<AnalyticsPage> {
-  final AnalyticsRepository _analyticsRepository = AnalyticsFirestore();
+  late final AnalyticsRepository _analyticsRepository;
+  late Future<List<UserLocations>> _userLocationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _analyticsRepository = widget.analyticsRepository ?? AnalyticsFirestore();
+    _userLocationsFuture = _analyticsRepository.getUserLocations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,7 @@ class AnalyticsPageState extends State<AnalyticsPage> {
         height: AppTheme.fullHeight(context),
         child: SingleChildScrollView(
           child: FutureBuilder<List<UserLocations>>(
-            future: _analyticsRepository.getUserLocations(),
+            future: _userLocationsFuture,
             builder: (context, snapshot) {
               AppConfig.logger.d("AnalyticsPage: FutureBuilder snapshot: ${snapshot.connectionState} - ${snapshot.data?.length ?? 0}");
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -43,13 +51,14 @@ class AnalyticsPageState extends State<AnalyticsPage> {
                 return const Center(child: Text('Error loading userLocations'));
               } else {
                 List<UserLocations> userLocations = [];
-                Map<String,int> dateData = {};
+                Map<String, int> dateData = {};
 
                 List<MapEntry<String, int>> sortedEntries = [];
-                if(snapshot.data != null) {
-                  userLocations = snapshot.data!;
+                if (snapshot.data != null) {
+                  userLocations = List<UserLocations>.of(snapshot.data!);
                   userLocations.sort((a, b) => _parseDateId(b.dateId).compareTo(_parseDateId(a.dateId)));
-                  dateData = userLocations.first.locationCounts ?? {};
+                  final latest = userLocations.firstOrNull;
+                  dateData = latest?.locationCounts ?? {};
 
                   sortedEntries = dateData.entries.toList()
                     ..sort((a, b) => b.value.compareTo(a.value));
@@ -59,23 +68,25 @@ class AnalyticsPageState extends State<AnalyticsPage> {
 
                 for (UserLocations ul in userLocations) {
                   // Convertir el dateId a DateTime para extraer el mes.
-                  DateTime? date = _parseDateId(ul.dateId);
+                  DateTime date = _parseDateId(ul.dateId);
                   int month = date.month;
                   // Acumular totalUsers para cada mes.
-                  if(monthlyValues[month] == null || (monthlyValues[month] ?? 0) < ul.totalUsers) {
+                  if (monthlyValues[month] == null || (monthlyValues[month] ?? 0) < ul.totalUsers) {
                     monthlyValues[month] = ul.totalUsers;
                   }
-
                 }
+
+                final lastMonthCount =
+                    monthlyValues[_lastAvailableMonth(monthlyValues)] ?? 0;
 
                 return Column(
                   children: [
                     YearlyLineChart(monthlyValues: monthlyValues, yTitle: AppTranslationConstants.users.tr,),
                     AppTheme.heightSpace5,
-                    Text('${monthlyValues[_lastAvailableMonth(monthlyValues)]} ${AppTranslationConstants.users.tr.capitalize}',
-                      style: TextStyle(
+                    Text('$lastMonthCount ${AppTranslationConstants.users.tr.capitalize}',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20
+                        fontSize: 20,
                       ),
                     ),
                     AppTheme.heightSpace5,
@@ -102,11 +113,12 @@ class AnalyticsPageState extends State<AnalyticsPage> {
   }
 
   DateTime _parseDateId(String dateId) {
-    if(dateId.isEmpty) return DateTime(0);
+    if (dateId.length < 8) return DateTime(0);
 
-    final month = int.parse(dateId.substring(0, 2));
-    final day = int.parse(dateId.substring(2, 4));
-    final year = int.parse(dateId.substring(4));
+    final month = int.tryParse(dateId.substring(0, 2));
+    final day = int.tryParse(dateId.substring(2, 4));
+    final year = int.tryParse(dateId.substring(4));
+    if (month == null || day == null || year == null) return DateTime(0);
     return DateTime(year, month, day);
   }
 

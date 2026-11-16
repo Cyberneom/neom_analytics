@@ -19,8 +19,9 @@ import '../utils/constants/analytic_translation_constants.dart';
 /// - Expandable flow cards with step breakdown
 /// - Screen visit summary
 class FlowMonitorPage extends StatefulWidget {
+  final FlowLogFirestore? flowLogFirestore;
 
-  const FlowMonitorPage({super.key});
+  const FlowMonitorPage({super.key, this.flowLogFirestore});
 
   @override
   State<FlowMonitorPage> createState() => _FlowMonitorPageState();
@@ -28,7 +29,8 @@ class FlowMonitorPage extends StatefulWidget {
 
 class _FlowMonitorPageState extends State<FlowMonitorPage> {
 
-  final FlowLogFirestore _firestore = FlowLogFirestore();
+  late final FlowLogFirestore _firestore =
+      widget.flowLogFirestore ?? FlowLogFirestore();
   List<FlowLogEntry> _flows = [];
   List<ScreenLogEntry> _screenLogs = [];
   bool _isLoading = true;
@@ -41,11 +43,13 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
   }
 
   Future<void> _loadData() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
     final results = await Future.wait([
       _firestore.getAllFlows(),
       _firestore.getScreenLogs(days: 7),
     ]);
+    if (!mounted) return;
     _flows = results[0] as List<FlowLogEntry>;
     _screenLogs = results[1] as List<ScreenLogEntry>;
     setState(() => _isLoading = false);
@@ -158,6 +162,12 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
   Widget _buildFlowDurationChart() {
     if (_flows.isEmpty) return const SizedBox.shrink();
 
+    final maxDuration = _flows
+        .map((e) => e.avgDurationMs.toDouble())
+        .reduce((a, b) => a > b ? a : b);
+    final safeMaxY = maxDuration > 0 ? maxDuration * 1.2 : 1.0;
+    final safeHorizontalInterval = maxDuration > 0 ? maxDuration / 4 : 1.0;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -177,7 +187,7 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceAround,
-                maxY: _flows.map((e) => e.avgDurationMs.toDouble()).reduce((a, b) => a > b ? a : b) * 1.2,
+                maxY: safeMaxY,
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
@@ -228,7 +238,7 @@ class _FlowMonitorPageState extends State<FlowMonitorPage> {
                 gridData: FlGridData(
                   show: true,
                   drawVerticalLine: false,
-                  horizontalInterval: _flows.map((e) => e.avgDurationMs.toDouble()).reduce((a, b) => a > b ? a : b) / 4,
+                  horizontalInterval: safeHorizontalInterval,
                   getDrawingHorizontalLine: (value) => FlLine(
                     color: Colors.white.withAlpha(12),
                     strokeWidth: 1,
